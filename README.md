@@ -1,7 +1,7 @@
 # COMP-1510-Final-Hackathon
 
-Name: 
-Student number: 
+Name: Sally Poon
+Student number: A01232177
 
 ###### ** Add any comments for me below this line **
 
