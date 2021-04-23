@@ -84,30 +84,52 @@ def WIN_BONUS() -> int:
 
 class Card:
 
-    def __init__(self):
-        """Instantiate a Card class."""
-        pass
+    def __init__(self, face: str, value: int, suit: str):
+        """Instantiate a Card class.
+
+        >>> two_of_spades = Card("2", 2, "Spades")
+        >>> two_of_spades.face
+        '2'
+        >>> two_of_spades.value
+        2
+        >>> two_of_spades.suit
+        'Spades'
+        """
+        self.face = face
+        self.value = value
+        self.suit = suit
 
     def __str__(self):
         """Return the string when the card is printed.
 
         :return: a string, the returned string if the card is passed to print
+
+        >>> two_of_spades = Card("2", 2, "Spades")
+        >>> print(two_of_spades)
+        This card is a 2 of Spades with a value of 2.
         """
-        pass
+        return f"This card is a {self.face} of {self.suit} with a value of {self.value}."
 
     def __repr__(self):
         """Return the official string representation of the card.
 
         :return: a string, the official string representation of this card
+
+        >>> two_of_spades = Card("2", 2, "Spades")
+        >>> two_of_spades
+        Card(2, 2, Spades)
         """
-        pass
+        return f"Card({self.face}, {self.value}, {self.suit})"
 
 
 class CardDeck:
 
     def __init__(self):
-        """Instantiate a Deck class."""
-        pass
+        """Instantiate a CardDeck class.
+
+        >>> my_deck = CardDeck()
+        """
+        self.cards = []
 
     def __str__(self):
         """Return the string when the deck is printed.
