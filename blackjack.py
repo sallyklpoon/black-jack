@@ -62,6 +62,21 @@ def START_BANK():
     pass
 
 
+def WIN_BONUS():
+    """Return the extra bonus to multiply bet by if player wins.
+
+    :return: an integer, the bonus to multiply the bet by
+    """
+
+
+def TURN_OPTIONS():
+    """Return a player's turn options as a tuple.
+
+    :return: a tuple of strings, the player's turn options
+    """
+    pass
+
+
 """
 ========================================================================================================================
                                                       CLASSES
@@ -110,6 +125,22 @@ class Deck:
         """
         pass
 
+    def shuffle(self):
+        """Shuffle the deck randomly.
+
+        :return: None, the deck will be shuffled
+        """
+        pass
+
+    def draw(self):
+        """Draw the first card at the top of the deck.
+
+        When a card is drawn, it is removed from the deck.
+
+        :return: None, the deck will have have one card gone, the top card
+        """
+        pass
+
 
 class Player:
 
@@ -152,6 +183,59 @@ class Bank:
         """
         pass
 
+    def deduct(self):
+        """Deduct the current bet amount from the bank's balance.
+
+        :postcondition: the bank.balance is deducted the bank.bet amount
+        :return: None, the bank.balance modified
+        """
+        pass
+
+    def collect(self, bonus=1):
+        """Collect the bet amount multiplied by a bonus.
+
+        Default value of bonus is 1, meaning no bonus.
+
+        :param bonus: an integer
+        :precondition: bonus is the bonus multiplier for the collected bet when a player has won
+        :postcondition: the Bank.balance appropriately increments by the bank.bet amount multiplied by the bonus
+        :return: None, the Bank.balance is modified
+        """
+        pass
+
+    def get_bet(self) -> int:
+        """Return the user's input bet amount as an integer.
+
+        :precondition: user will only input integers
+        :postcondition: the integer of user's input is returned
+        :return: an integer, the user's bet
+
+        No doctests, requires user input
+        """
+        pass
+
+    def valid_bet(self, amount):
+        """Verify that a bet is valid.
+
+        Give that MINIMUM_BET <= amount <= bank.balance
+
+        :param amount: an integer
+        :precondition: amount is an integer representing the bet amount placed by a player
+        :postcondition: accurately verify that MINIMUM_BET <= amount <= bank.balance, returning the Boolean of
+                        this statement
+        :return: Boolean, whether or not the bet amount is valid
+        """
+        pass
+
+    def place_bet(self):
+        """Allow users to place a valid bet.
+
+        :postcondition: the bet amount that the user has specified is deducted from bank.balance and stored in
+                        bank.bet
+        :return: None, simply modifies both bank.balance and bank.bet
+        """
+        pass
+
 
 class Report:
 
@@ -173,3 +257,30 @@ class Report:
         """
         pass
 
+    def update(self, result):
+        """Record a loss, win, or draw in the report object.
+
+        :param result: a string
+        :precondition: result is a string of either "draw", "win" or "lose"
+        :postcondition: increments record.loss by 1 if result == "lose"
+        :postcondition: increments record.win by 1 if result == "win"
+        :postconditoin: increments record.draw by 1 if result == "draw"
+        :return: None, modifies either record.loss, record.win, or record.draw appropriately
+        """
+        pass
+
+    def rounds(self):
+        """Return the number of total rounds played.
+
+        :postcondition: accurately sum up wins, losses, and draws to produce the total number of rounds
+        :return: an integer, the sum of all rounds that have been played
+        """
+        pass
+
+
+
+"""
+========================================================================================================================
+                                                      FUNCTIONS
+========================================================================================================================
+"""
