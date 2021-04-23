@@ -5,6 +5,8 @@ Student Number: A01232177
 This is a module to play BlackJack 21.
 """
 
+import random
+
 """
 ========================================================================================================================
                                                 CONSTANTS
@@ -176,15 +178,39 @@ class CardDeck:
         """Return the official string representation of the deck.
 
         :return: a string, the official string representation of this deck
+
+        >>> my_deck = CardDeck()
+        >>> my_deck #doctest: +NORMALIZE_WHITESPACE
+        Deck([Card(2, 2, Diamonds), Card(2, 2, Hearts), Card(2, 2, Clubs), Card(2, 2, Spades),
+        Card(3, 3, Diamonds), Card(3, 3, Hearts), Card(3, 3, Clubs), Card(3, 3, Spades),
+        Card(4, 4, Diamonds), Card(4, 4, Hearts), Card(4, 4, Clubs), Card(4, 4, Spades),
+        Card(5, 5, Diamonds), Card(5, 5, Hearts), Card(5, 5, Clubs), Card(5, 5, Spades),
+        Card(6, 6, Diamonds), Card(6, 6, Hearts), Card(6, 6, Clubs), Card(6, 6, Spades),
+        Card(7, 7, Diamonds), Card(7, 7, Hearts), Card(7, 7, Clubs), Card(7, 7, Spades),
+        Card(8, 8, Diamonds), Card(8, 8, Hearts), Card(8, 8, Clubs), Card(8, 8, Spades),
+        Card(9, 9, Diamonds), Card(9, 9, Hearts), Card(9, 9, Clubs), Card(9, 9, Spades),
+        Card(10, 10, Diamonds), Card(10, 10, Hearts), Card(10, 10, Clubs), Card(10, 10, Spades),
+        Card(Jack, 10, Diamonds), Card(Jack, 10, Hearts), Card(Jack, 10, Clubs), Card(Jack, 10, Spades),
+        Card(Queen, 10, Diamonds), Card(Queen, 10, Hearts), Card(Queen, 10, Clubs), Card(Queen, 10, Spades),
+        Card(King, 10, Diamonds), Card(King, 10, Hearts), Card(King, 10, Clubs), Card(King, 10, Spades),
+        Card(Ace, 11, Diamonds), Card(Ace, 11, Hearts), Card(Ace, 11, Clubs), Card(Ace, 11, Spades)])
         """
-        pass
+        return f"Deck({self.cards})"
 
     def shuffle(self):
         """Shuffle the deck randomly.
 
         :return: None, the deck will be shuffled
+
+        No doctests, uses random module, but used some tests to check changes are made to self.cards
+
+        >>> my_deck = CardDeck()
+        >>> original_copy = my_deck.cards.copy()
+        >>> my_deck.shuffle()
+        >>> my_deck.cards != original_copy
+        True
         """
-        pass
+        random.shuffle(self.cards)
 
     def top_draw(self):
         """Draw the first card at the top of the deck.
@@ -192,8 +218,17 @@ class CardDeck:
         When a card is drawn, it is removed from the deck.
 
         :return: None, the deck will have have one card gone, the top card
+
+        >>> my_deck = CardDeck()
+        >>> my_deck.top_draw()
+        Card(2, 2, Diamonds)
+        >>> my_deck.top_draw()
+        Card(2, 2, Hearts)
+        >>> my_deck.top_draw()
+        Card(2, 2, Clubs)
         """
-        pass
+        top_card = self.cards.pop(0)
+        return top_card
 
 
 class Player:
