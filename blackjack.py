@@ -561,7 +561,7 @@ def draw_card(person, deck, times=1):
     >>> my_person = Player()
     >>> my_deck = CardDeck()
     >>> draw_card(my_person, my_deck)
-    ----- User draws 2 of Diamonds with a value of 2 -----
+    -----> User draws 2 of Diamonds with a value of 2
     <BLANKLINE>
     >>> my_person.total
     2
@@ -579,7 +579,7 @@ def draw_card(person, deck, times=1):
                 person.aceCount += 1
             person.hand.append(card)
             person.total += card.value
-            print(f"----- {drawing_player} draws {card.__str__()} -----\n")
+            print(f"-----> {drawing_player} draws {card.__str__()}\n")
 
 
 def bust(person):
@@ -731,19 +731,41 @@ def end_game(bank, card_deck) -> bool:
 # -----------------PLAY ROUND-------------------------------------------------------------------------------------------
 
 
-def start_round(player, dealer, deck):
+def start_round(user, dealer, deck):
     """Begin the round by having player and dealer draw 2 cards each.
 
-    :param player: a Player
+    :param user: a Player
     :param dealer: a Player
     :param deck: a CardDeck
-    :precondition: the player and dealer are instances of the Player class
+    :precondition: the user and dealer are instances of the Player class
     :precondition: the deck is an instance of the CardDeck class
-    :postcondition: the player and dealer receives 2 cards to their hand by drawing from the deck
+    :postcondition: the user and dealer receives 2 cards to their hand by drawing from the deck
     :postcondition: the deck will have cards reduced in its deck.cards attribute by at most, 4 cards
-    :return: None, player, dealer, and deck attributes likely modified
-    """
+    :return: None, user, dealer, and deck attributes likely modified
 
+    >>> my_deck = CardDeck()
+    >>> bob = Player()
+    >>> my_dealer = Player(dealer=True)
+    >>> start_round(bob, my_dealer, my_deck)
+    -----> Dealer draws 2 of Diamonds with a value of 2
+    <BLANKLINE>
+    -----> Dealer draws 2 of Hearts with a value of 2
+    <BLANKLINE>
+    -----> User draws 2 of Clubs with a value of 2
+    <BLANKLINE>
+    -----> User draws 2 of Spades with a value of 2
+    <BLANKLINE>
+    >>> my_dealer.hand
+    [Card(2, 2, Diamonds), Card(2, 2, Hearts)]
+    >>> my_dealer.total
+    4
+    >>> bob.hand
+    [Card(2, 2, Clubs), Card(2, 2, Spades)]
+    >>> bob.total
+    4
+    """
+    draw_card(dealer, deck, 2)
+    draw_card(user, deck, 2)
 
 
 def dealer_turn(dealer, deck):
@@ -756,24 +778,32 @@ def dealer_turn(dealer, deck):
     :postcondition: the dealer will draw until the card deck is exhausted, they have reached STAND_LIMIT(), or
                     they bust
     :return: None, the dealer's hand and the deck may be modified
+
+
     """
-    pass
+    while deck and not bust(dealer) and dealer.total < STAND_LIMIT():
+        draw_card(dealer, deck)
+    print("The dealer Stands.\n")
 
 
-def player_turn(player, deck):
+def player_turn(user, deck):
     """Execute the player's turn to draw until player decides to stand, the deck is exhausted, or they bust.
 
-    :param player: a Player
+    :param user: a Player
     :param deck: a CardDeck
-    :precondition: the player is an instance of a Player class
+    :precondition: the user is an instance of a Player class
     :precondition: a deck is an instance of a CardDeck class
-    :postcondition: the player will be asked if they would like to draw until the card deck is exhausted, they bust,
-                    or player decides to stand
-    :return: None, player and deck attributes possibly modified
+    :postcondition: the user will be asked if they would like to draw until the card deck is exhausted, they bust,
+                    or user decides to stand
+    :return: None, user and deck attributes possibly modified
 
     No doctests, player input required
     """
-    pass
+    while deck and not bust(user):
+        if player_draw():
+            draw_card(user, deck)
+        else:
+            print("You've chosen to Stand, this ends the round.")
 
 
 def player_draw():
@@ -782,14 +812,20 @@ def player_draw():
     :postcondition: return Boolean True if player wants to draw another card, return Boolean False if player
                     does not want to draw another card
     :return: Boolean
+
+    No doctests, player input required
     """
-    pass
+    print("It's your turn!\n"
+          "What would you like to do?\n")
+    number_print(TURN_OPTIONS())
+    user_decision = input("Enter the number of your decision: ")
+    return user_decision == "1"
 
 
-def play_round(player, dealer, deck):
+def play_round(user, dealer, deck):
     """Execute a full round of BlackJack between a player and dealer.
 
-    :param player: a Player
+    :param user: a Player
     :param dealer: a Player
     :param deck: a CardDeck
     :precondition: the player and dealer are instances of the Player class
@@ -801,23 +837,69 @@ def play_round(player, dealer, deck):
 
     No doctests, user input required
     """
-    pass
+    start_round(user=user, dealer=dealer, deck=deck)
+    dealer_turn(dealer, deck)
+    if dealer.total <= GOAL_TOTAL():
+        player_turn(user, deck)
 
 
 # -----------------ENDING THE ROUND-------------------------------------------------------------------------------------
 
-def decide_winner(player, dealer):
+def decide_winner(user, dealer):
     """Determine who the winner is based on the total results.
 
-    :param player: a Player
+    :param user: a Player
     :param dealer: a Player
-    :precondition: the player and dealer are instances of the Player class
-    :postcondition: return a draw if both player and dealer's total scores are equal
-    :postcondition: return 'player' if the dealer's hand is bust or if player's total is > dealer's total
-    :postcondition: return 'dealer' if the player's hand is bust or if dealer's total is > player's total
-    :return: a string, either 'draw', 'player' or 'dealer'
+    :precondition: the user and dealer are instances of the Player class
+    :postcondition: return a draw if both user and dealer's total scores are equal
+    :postcondition: return 'user' if the dealer's hand is bust or if user's total is > dealer's total
+    :postcondition: return 'dealer' if the user's hand is bust or if dealer's total is > player's total
+    :return: a string, either 'draw', 'user' or 'dealer'
+
+    >>> my_player = Player()
+    >>> my_dealer = Player(dealer=True)
+
+    >>> my_dealer.total = GOAL_TOTAL() + 1
+    >>> decide_winner(my_player, my_dealer)
+    <BLANKLINE>
+    This round, your total hand is 0 and the dealer's total hand is 22
+    'user'
+    >>> my_dealer.total = GOAL_TOTAL() - 1
+    >>> my_player.total = GOAL_TOTAL() + 1
+    >>> decide_winner(my_player, my_dealer)
+    <BLANKLINE>
+    This round, your total hand is 22 and the dealer's total hand is 20
+    'dealer'
+    >>> my_dealer.total = 10
+    >>> my_player.total = 19
+    >>> decide_winner(my_player, my_dealer)
+    <BLANKLINE>
+    This round, your total hand is 19 and the dealer's total hand is 10
+    'user'
+    >>> my_dealer.total = 20
+    >>> my_player.total = 18
+    >>> decide_winner(my_player, my_dealer)
+    <BLANKLINE>
+    This round, your total hand is 18 and the dealer's total hand is 20
+    'dealer'
+    >>> my_dealer.total = 5
+    >>> my_player.total = 5
+    >>> decide_winner(my_player, my_dealer)
+    <BLANKLINE>
+    This round, your total hand is 5 and the dealer's total hand is 5
+    'draw'
     """
-    pass
+    print(f"\nThis round, your total hand is {user.total} and the dealer's total hand is {dealer.total}")
+    if bust(dealer):
+        return "user"
+    if bust(user):
+        return "dealer"
+    if user.total > dealer.total:
+        return "user"
+    if user.total < dealer.total:
+        return "dealer"
+    else:   # tie
+        return "draw"
 
 
 def win_round(bank, report):
