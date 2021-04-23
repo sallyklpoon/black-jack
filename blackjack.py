@@ -14,6 +14,15 @@ import random
 """
 
 
+def WELCOME() -> str:
+    """Return the string for welcome message to the game.
+
+    :return: a string, the welcome message
+    """
+    return "Hi! Welcome to the table, let's start your game of BlackJack 21.\n" \
+           "In this game, the dealer will draw first until they stand before you have the chance to draw or stand.\n"
+
+
 def TURN_OPTIONS() -> tuple:
     """Return the player's options available for each turn.
 
@@ -644,22 +653,55 @@ def adjust_ace(person):
         print(f"An Ace value in this player's hand has been adjusted to 1 for a new total of {person.total}")
 
 
+def number_print(items: iter) -> None:
+    """Print menu options for a given tuple of menu options.
+
+    :param items: an iterable data type
+    :precondition: items is an iterable data-type containing elements
+    :postcondition: print enumerated items starting from 1
+    :return: prints enumerated options as strings starting from 1
+
+    >>> no_items = []
+    >>> number_print(no_items)
+
+    >>> items_tuple = ('apples', 'oranges', 'peaches')
+    >>> number_print(items_tuple)
+    [1] apples
+    [2] oranges
+    [3] peaches
+    >>> items_list = ['muffins', 'croissants', 'cake']
+    >>> number_print(items_list)
+    [1] muffins
+    [2] croissants
+    [3] cake
+    """
+    for number, option in enumerate(items, 1):
+        print(f"[{number}] {option}")
+
+
 # -----------------START GAME-------------------------------------------------------------------------------------------
 
 
-def start_game():
+def start_game() -> tuple:
     """Start the game by producing the necessary components for the game.
 
     :postcondition: returns the necessary components: user's player, dealer, bank, deck, and report for the game
                     as a tuple
     :return: a tuple of the necessary game components
+
+    No doctests, deck.shuffle uses random module
     """
-    pass
+    print(WELCOME())
+    user, dealer = Player(), Player(dealer=True)
+    score_report, bank = Report(), Bank()
+    deck = CardDeck()
+    deck.shuffle()
+    return user, dealer, score_report, bank, deck
 
 
 # -----------------END GAME---------------------------------------------------------------------------------------------
 
-def end_game():
+def end_game(bank, card_deck) -> bool:
     """Determine if the game should end.
 
     Game will end if deck of cards in game has been exhausted or if the player's bank balance is < MINIMUM_BET()
@@ -667,9 +709,24 @@ def end_game():
     :postcondition: return True if the game must end (i.e. deck of cards is empty or player's bank balance is <
                     MINIMUM_BET()
     :postcondition: return False if game does not meet end-game requirements and must continue
-    :return: a Boolean
+    :return: Boolean
+
+    >>> piggy_bank = Bank()
+    >>> my_deck = CardDeck()
+    >>> end_game(piggy_bank, my_deck)
+    False
+    >>> piggy_bank.balance = MINIMUM_BET()
+    >>> end_game(piggy_bank, my_deck)
+    False
+    >>> piggy_bank.balance = MINIMUM_BET() - 1
+    >>> end_game(piggy_bank, my_deck)
+    True
+    >>> piggy_bank.balance = START_BANK()
+    >>> my_deck.cards = []
+    >>> end_game(piggy_bank, my_deck)
+    True
     """
-    pass
+    return bank.balance < MINIMUM_BET() or not card_deck.cards
 
 # -----------------PLAY ROUND-------------------------------------------------------------------------------------------
 
@@ -686,7 +743,7 @@ def start_round(player, dealer, deck):
     :postcondition: the deck will have cards reduced in its deck.cards attribute by at most, 4 cards
     :return: None, player, dealer, and deck attributes likely modified
     """
-    pass
+
 
 
 def dealer_turn(dealer, deck):
