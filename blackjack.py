@@ -415,6 +415,7 @@ class Bank:
 
         >>> my_bank = Bank()
         >>> my_bank.collect(1)
+        The player collects $0.
         >>> my_bank.balance
         100
         """
@@ -426,36 +427,75 @@ class Bank:
 class Report:
 
     def __init__(self):
-        """Instantiate a Card class.
+        """Instantiate a Report class.
 
-        :"""
-        pass
+        :postcondition: an object of the Report class is instantiated with attributes wins, losses, and draws
+        :postcondition: wins is an integer that will store the number of wins by the main player
+        :postcondition: losses is an integer that will store the number of losses by the main player
+        :postcondition: draws is an integer that will store the number of draws by the main player
+        :return: an instance of the Report class
+
+        >>> game_report = Report()
+        >>> game_report.wins
+        0
+        >>> game_report.losses
+        0
+        >>> game_report.draws
+        0
+        """
+        self.wins = 0
+        self.losses = 0
+        self.draws = 0
 
     def __str__(self):
         """Return the string when this report is printed.
 
         :return: a string, the returned string if the report is passed to print
+
+        >>> game_report = Report()
+        >>> print(game_report)
+        WINS: 0, LOSSES: 0, DRAWS: 0
         """
-        pass
+        return f"WINS: {self.wins}, LOSSES: {self.losses}, DRAWS: {self.draws}"
 
     def __repr__(self):
         """Return the official string representation of the report.
 
         :return: a string, the official string representation of this report
-        """
-        pass
 
-    def update(self, result):
+        >>> game_report = Report()
+        >>> game_report
+        Report(0, 0, 0)
+        """
+        return f"Report({self.wins}, {self.losses}, {self.draws})"
+
+    def record(self, result: str):
         """Record a loss, win, or top_draw in the report object.
 
         :param result: a string
-        :precondition: result is a string of either "top_draw", "win" or "lose"
+        :precondition: result is a string of either "draw", "win" or "lose"
         :postcondition: increments record.loss by 1 if result == "lose"
         :postcondition: increments record.win by 1 if result == "win"
-        :postcondition: increments record.top_draw by 1 if result == "top_draw"
-        :return: None, modifies either record.loss, record.win, or record.top_draw appropriately
+        :postcondition: increments record.draw by 1 if result == "draw"
+        :return: None, modifies either record.loss, record.win, or record.draw appropriately
+
+        >>> game_report = Report()
+        >>> game_report.record(result="win")
+        >>> game_report
+        Report(1, 0, 0)
+        >>> game_report.record("lose")
+        >>> game_report
+        Report(1, 1, 0)
+        >>> game_report.record("draw")
+        >>> game_report
+        Report(1, 1, 1)
         """
-        pass
+        if result == "win":
+            self.wins += 1
+        elif result == "lose":
+            self.losses += 1
+        elif result == "draw":
+            self.draws += 1
 
     def rounds(self):
         """Return the number of total rounds played.
