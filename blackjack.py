@@ -105,7 +105,7 @@ class Card:
         pass
 
 
-class Deck:
+class CardDeck:
 
     def __init__(self):
         """Instantiate a Deck class."""
@@ -132,7 +132,7 @@ class Deck:
         """
         pass
 
-    def draw(self):
+    def top_draw(self):
         """Draw the first card at the top of the deck.
 
         When a card is drawn, it is removed from the deck.
@@ -258,14 +258,14 @@ class Report:
         pass
 
     def update(self, result):
-        """Record a loss, win, or draw in the report object.
+        """Record a loss, win, or top_draw in the report object.
 
         :param result: a string
-        :precondition: result is a string of either "draw", "win" or "lose"
+        :precondition: result is a string of either "top_draw", "win" or "lose"
         :postcondition: increments record.loss by 1 if result == "lose"
         :postcondition: increments record.win by 1 if result == "win"
-        :postconditoin: increments record.draw by 1 if result == "draw"
-        :return: None, modifies either record.loss, record.win, or record.draw appropriately
+        :postconditoin: increments record.top_draw by 1 if result == "top_draw"
+        :return: None, modifies either record.loss, record.win, or record.top_draw appropriately
         """
         pass
 
@@ -284,3 +284,103 @@ class Report:
                                                       FUNCTIONS
 ========================================================================================================================
 """
+# -----------------COMMON FUNCTIONS-------------------------------------------------------------------------------------
+
+
+def draw_card(person, deck, times=1):
+    """Update person's hand with a new drawn card a specified number of times.
+
+    :param person: a Player
+    :param deck: a CardDeck
+    :param times: an integer, default 1
+    :precondition: person is an instance of a Player, with the attribute hands, a list of possible Card objects
+    :precondition: deck is an instance of a CardDeck with a list of cards available
+    :precondition: times is an integer, the number of cards/times a player should top_draw
+    :postcondition: the person's hand will have a card added to it based on the card at the top of the deck
+    :return: None, deck and person is modified by decrease and increase of a card respectively
+    """
+    pass
+
+
+def bust(person):
+    """Determine if the person has busted.
+
+    Bust meaning the total points in their hand has hit > BUST_LIMIT()
+
+    :param person: a Player
+    :precondition: person is an instance of the Player class
+    :postcondition: return True of False if the person has busted
+    :postcondition: a player is bust if their total points is > BUST_LIMIT()
+    :return: Boolean, True/False if player's total is > BUST_LIMIT()
+    """
+    pass
+
+
+def adjust_ace(person):
+    """Adjust the person's total score if they have an ace on hand.
+
+    :param person: a Player
+    :precondition: person is an instance of the Player class
+    :postcondition: the player's total score is adjusted if and only if they have an ace on hand and their current
+                    total score exceeds that the BUST_LIMIT()
+    :postcondition: should the player meet any of the two conditions for adjustment, the person's score is subtracted
+                    by 10 for each ace they have on hand until their total is <= BUST_LIMIT()
+    :return: None, the player's total score possibly modified
+    """
+    pass
+
+
+# -----------------START GAME-------------------------------------------------------------------------------------------
+
+
+def start_game():
+    """Start the game by producing the necessary components for the game.
+
+    :postcondition: returns the necessary components: user's player, dealer, bank, deck, and report for the game
+                    as a tuple
+    :return: a tuple of the necessary game components
+    """
+    pass
+
+
+# -----------------END GAME---------------------------------------------------------------------------------------------
+
+def end_game():
+    """Determine if the game should end.
+
+    Game will end if deck of cards in game has been exhausted or if the player's bank balance is < MINIMUM_BET()
+
+    :postcondition: return True if the game must end (i.e. deck of cards is empty or player's bank balance is <
+                    MINIMUM_BET()
+    :postcondition: return False if game does not meet end-game requirements and must continue
+    :return: a Boolean
+    """
+    pass
+
+# -----------------PLAY ROUND-------------------------------------------------------------------------------------------
+
+
+def play_round(player, dealer, deck):
+    """
+
+    :param player:
+    :param dealer:
+    :param deck:
+    :return:
+    """
+
+"""
+========================================================================================================================
+                                                      MAIN FUNCTION
+========================================================================================================================
+"""
+
+
+def blackjack():
+    """Execute a game of BlackJack.
+
+    :postcondition: the game will continue to run until one card deck is exhausted
+                    or player's bank is < MINIMUM_BET()
+    :return: None, executes the game to completion
+    """
+    pass
