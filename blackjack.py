@@ -280,36 +280,72 @@ class Player:
         """Return the string when the player is printed.
 
         :return: a string, the returned string if the player is passed to print
+
+        >>> some_player = Player()
+        >>> print(some_player)
+        This player has [] for a current total of 0 and 0 Aces valued at a soft 11. This player is a dealer: False.
+        >>> some_dealer = Player(dealer=True)
+        >>> print(some_dealer)
+        This player has [] for a current total of 0 and 0 Aces valued at a soft 11. This player is a dealer: True.
         """
-        pass
+        return f"This player has {self.hand} for a current total of {self.total} and {self.aceCount} Aces " \
+               f"valued at a soft 11. This player is a dealer: {self.dealer}."
 
     def __repr__(self):
         """Return the official string representation of the player.
 
         :return: a string, the official string representation of this player
+
+        >>> some_player = Player()
+        >>> some_player
+        Player([], 0, 0, False)
+        >>> some_dealer = Player(dealer=True)
+        >>> some_dealer
+        Player([], 0, 0, True)
         """
-        pass
+        return f"Player({self.hand}, {self.total}, {self.aceCount}, {self.dealer})"
 
 
 class Bank:
 
     def __init__(self):
-        """Instantiate a Bank class."""
-        pass
+        """Instantiate a Bank class.
+
+        :postcondition: an object of the Bank class is instantiated with attributes balance and bet
+        :postcondition: the balance attribute value is equivalent to START_BANK() constant
+        :postcondition: the bet attribute will store a player's bet, starting at 0
+        :return: an instance of the Bank class
+
+        >>> my_bank = Bank()
+        >>> my_bank.balance == START_BANK()
+        True
+        >>> my_bank.bet
+        0
+        """
+        self.balance = START_BANK()
+        self.bet = 0
 
     def __str__(self):
         """Return the string when the bank is printed.
 
         :return: a string, the returned string if the bank is passed to print
+
+        >>> my_bank = Bank()
+        >>> print(my_bank)
+        The player's bank has a balance of $100 with a bet of $0 placed.
         """
-        pass
+        return f"The player's bank has a balance of ${self.balance} with a bet of ${self.bet} placed."
 
     def __repr__(self):
         """Return the official string representation of the bank.
 
         :return: a string, the official string representation of this bank
+
+        >>> my_bank = Bank()
+        >>> my_bank
+        Bank(100, 0)
         """
-        pass
+        return f"Bank({self.balance}, {self.bet})"
 
     def deduct(self):
         """Deduct the current bet amount from the bank's balance.
