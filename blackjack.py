@@ -10,7 +10,7 @@ import time
 
 """
 ========================================================================================================================
-                                                CONSTANTS
+                                                   CONSTANTS
 ========================================================================================================================
 """
 
@@ -368,8 +368,7 @@ class Bank:
         """
         return f"Bank({self.balance}, {self.bet})"
 
-    @staticmethod
-    def get_bet() -> int:
+    def get_bet(self) -> int:
         """Return the user's input bet amount as an integer.
 
         :precondition: user will only input integers
@@ -378,7 +377,8 @@ class Bank:
 
         No doctests, requires user input
         """
-        return int(input("How much money would you like to place? (input an integer): "))
+        return int(input(f"How much money would you like to place? "
+                         f"(input an integer between {MINIMUM_BET()}-{self.balance}): "))
 
     def valid_bet(self, amount: int) -> bool:
         """Verify that a bet is valid.
@@ -949,11 +949,15 @@ def decide_winner(user, dealer):
     >>> my_dealer.total = GOAL_TOTAL() + 1
     >>> decide_winner(my_player, my_dealer)
     <BLANKLINE>
+    =============== END OF ROUND ===============
+    <BLANKLINE>
     This round, your total hand is 0 and the dealer's total hand is 22
     'user'
     >>> my_dealer.total = GOAL_TOTAL() - 1
     >>> my_player.total = GOAL_TOTAL() + 1
     >>> decide_winner(my_player, my_dealer)
+    <BLANKLINE>
+    =============== END OF ROUND ===============
     <BLANKLINE>
     This round, your total hand is 22 and the dealer's total hand is 20
     'dealer'
@@ -961,11 +965,15 @@ def decide_winner(user, dealer):
     >>> my_player.total = 19
     >>> decide_winner(my_player, my_dealer)
     <BLANKLINE>
+    =============== END OF ROUND ===============
+    <BLANKLINE>
     This round, your total hand is 19 and the dealer's total hand is 10
     'user'
     >>> my_dealer.total = 20
     >>> my_player.total = 18
     >>> decide_winner(my_player, my_dealer)
+    <BLANKLINE>
+    =============== END OF ROUND ===============
     <BLANKLINE>
     This round, your total hand is 18 and the dealer's total hand is 20
     'dealer'
@@ -973,10 +981,13 @@ def decide_winner(user, dealer):
     >>> my_player.total = 5
     >>> decide_winner(my_player, my_dealer)
     <BLANKLINE>
+    =============== END OF ROUND ===============
+    <BLANKLINE>
     This round, your total hand is 5 and the dealer's total hand is 5
     'draw'
     """
-    print(f"\nThis round, your total hand is {user.total} and the dealer's total hand is {dealer.total}")
+    print(f"\n=============== END OF ROUND ===============\n\n"
+          f"This round, your total hand is {user.total} and the dealer's total hand is {dealer.total}")
     if bust(dealer):
         return "user"
     if bust(user):
@@ -1035,17 +1046,17 @@ def lose_round(report):
 
     >>> my_report = Report()
     >>> lose_round(my_report)
-    You've lost this round, sorry my friend :(
+    You've lost this round, no money for you, sorry my friend :(
     <BLANKLINE>
     >>> my_report
     Report(0, 1, 0)
     >>> lose_round(my_report)
-    You've lost this round, sorry my friend :(
+    You've lost this round, no money for you, sorry my friend :(
     <BLANKLINE>
     >>> my_report
     Report(0, 2, 0)
     """
-    print("You've lost this round, sorry my friend :(\n")
+    print("You've lost this round, no money for you, sorry my friend :(\n")
     report.record(result="lose")
 
 
@@ -1120,7 +1131,7 @@ def end_round(winner_result, bank, report):
     Report(1, 0, 1)
 
     >>> end_round("dealer", my_bank, my_report)
-    You've lost this round, sorry my friend :(
+    You've lost this round, no money for you, sorry my friend :(
     <BLANKLINE>
     >>> my_bank.balance
     130
@@ -1154,6 +1165,7 @@ def blackjack():
     score_report, bank, game_deck = start_game()
     while not end_game(bank, game_deck):
         user, dealer = Player(), Player(dealer=True)
+        print("\n=============== BEGINNING ROUND! ===============")
         bank.report_balance()
         bank.place_bet()
         play_round(user=user, dealer=dealer, deck=game_deck)
