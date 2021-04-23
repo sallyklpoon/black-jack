@@ -2,7 +2,7 @@
 Name: Sally Poon
 Student Number: A01232177
 
-This is a module to play BlackJack 21.
+This is a module to play BlackJack 21 for the 1510 Final Hackathon.
 """
 
 import random
