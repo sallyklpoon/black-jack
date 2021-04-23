@@ -78,6 +78,14 @@ def WIN_BONUS() -> int:
     """
     return 2
 
+
+def ACE_MODIFIER() -> int:
+    """Return the total modifier when a user has an Ace.
+
+    :return: an integer, the modifier when a user  has an Ace to adjust their soft hand
+    """
+    return 10
+
 """
 ========================================================================================================================
                                                       CLASSES
@@ -117,9 +125,9 @@ class Card:
 
         >>> two_of_spades = Card("2", 2, "Spades")
         >>> print(two_of_spades)
-        This card is a 2 of Spades with a value of 2.
+        2 of Spades with a value of 2
         """
-        return f"This card is a {self.face} of {self.suit} with a value of {self.value}."
+        return f"{self.face} of {self.suit} with a value of {self.value}"
 
     def __repr__(self):
         """Return the official string representation of the card.
@@ -540,8 +548,29 @@ def draw_card(person, deck, times=1):
     :precondition: times is an integer, the number of cards/times a player should top_draw
     :postcondition: the person's hand will have a card added to it based on the card at the top of the deck
     :return: None, deck and person is modified by decrease and increase of a card respectively
+
+    >>> my_person = Player()
+    >>> my_deck = CardDeck()
+    >>> draw_card(my_person, my_deck)
+    ----- User draws 2 of Diamonds with a value of 2 -----
+    <BLANKLINE>
+    >>> my_person.total
+    2
+    >>> my_person.hand
+    [Card(2, 2, Diamonds)]
     """
-    pass
+    drawing_player = "Dealer" if person.dealer else "User"
+    for _ in range(times):
+        try:
+            card = deck.top_draw()
+        except IndexError:
+            print("We've reached the bottom of the deck!")
+        else:
+            if card.face == "Ace":
+                person.aceCount += 1
+            person.hand.append(card)
+            person.total += card.value
+            print(f"----- {drawing_player} draws {card.__str__()} -----\n")
 
 
 def bust(person):
@@ -554,8 +583,28 @@ def bust(person):
     :postcondition: return True of False if the person has busted
     :postcondition: a player is bust if their total points is > BUST_LIMIT()
     :return: Boolean, True/False if player's total is > BUST_LIMIT()
+
+    >>> my_player = Player()
+    >>> my_player.total = 0
+    >>> bust(my_player)
+    False
+    >>> my_player.total = GOAL_TOTAL() // 2
+    >>> bust(my_player)
+    False
+    >>> my_player.total = GOAL_TOTAL()
+    >>> bust(my_player)
+    False
+    >>> my_player.total = GOAL_TOTAL() + 1
+    >>> bust(my_player)
+    True
     """
-    pass
+    if person.total > GOAL_TOTAL() and person.aceCount == 0:
+        return True
+    elif person.total > GOAL_TOTAL() and person.aceCount > 0:
+        adjust_ace(person)
+        return person.total > GOAL_TOTAL()
+    else:   # person.total <= GOAL_TOTAL()
+        return False
 
 
 def adjust_ace(person):
@@ -568,8 +617,31 @@ def adjust_ace(person):
     :postcondition: should the player meet any of the two conditions for adjustment, the person's score is subtracted
                     by 10 for each ace they have on hand until their total is <= BUST_LIMIT()
     :return: None, the player's total score possibly modified
+
+    >>> my_player = Player()
+    >>> my_player.total = GOAL_TOTAL() + 1
+    >>> my_player.aceCount = 2
+    >>> adjust_ace(my_player)
+    An Ace value in this player's hand has been adjusted to 1 for a new total of 12
+
+    >>> my_player.total = GOAL_TOTAL()
+    >>> my_player.aceCount = 2
+    >>> adjust_ace(my_player)
+
+    >>> my_player.total = GOAL_TOTAL() - 1
+    >>> my_player.aceCount = 1
+    >>> adjust_ace(my_player)
+
+    >>> my_player.total = GOAL_TOTAL() + 11
+    >>> my_player.aceCount = 2
+    >>> adjust_ace(my_player)
+    An Ace value in this player's hand has been adjusted to 1 for a new total of 22
+    An Ace value in this player's hand has been adjusted to 1 for a new total of 12
     """
-    pass
+    while person.total > GOAL_TOTAL() and person.aceCount != 0:
+        person.total -= ACE_MODIFIER()
+        person.aceCount -= 1
+        print(f"An Ace value in this player's hand has been adjusted to 1 for a new total of {person.total}")
 
 
 # -----------------START GAME-------------------------------------------------------------------------------------------
