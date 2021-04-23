@@ -133,6 +133,7 @@ class Card:
     def __str__(self):
         """Return the string when the card is printed.
 
+        :postcondition: return the string that will be returned when object is printed
         :return: a string, the returned string if the card is passed to print
 
         >>> two_of_spades = Card("2", 2, "Spades")
@@ -144,6 +145,7 @@ class Card:
     def __repr__(self):
         """Return the official string representation of the card.
 
+        :postcondition: return the object's string representation
         :return: a string, the official string representation of this card
 
         >>> two_of_spades = Card("2", 2, "Spades")
@@ -186,6 +188,7 @@ class CardDeck:
     def __str__(self):
         """Return the string when the deck is printed.
 
+        :postcondition: return the string that will be returned when object is printed
         :return: a string, the returned string if the deck is passed to print
 
         >>> my_deck = CardDeck()
@@ -210,6 +213,7 @@ class CardDeck:
     def __repr__(self):
         """Return the official string representation of the deck.
 
+        :postcondition: return the object's string representation
         :return: a string, the official string representation of this deck
 
         >>> my_deck = CardDeck()
@@ -300,6 +304,7 @@ class Player:
     def __str__(self):
         """Return the string when the player is printed.
 
+        :postcondition: return the string that will be returned when object is printed
         :return: a string, the returned string if the player is passed to print
 
         >>> some_player = Player()
@@ -315,6 +320,7 @@ class Player:
     def __repr__(self):
         """Return the official string representation of the player.
 
+        :postcondition: return the object's string representation
         :return: a string, the official string representation of this player
 
         >>> some_player = Player()
@@ -349,6 +355,7 @@ class Bank:
     def __str__(self) -> str:
         """Return the string when the bank is printed.
 
+        :postcondition: return the string that will be returned when object is printed
         :return: a string, the returned string if the bank is passed to print
 
         >>> my_bank = Bank()
@@ -360,6 +367,7 @@ class Bank:
     def __repr__(self) -> str:
         """Return the official string representation of the bank.
 
+        :postcondition: return the object's string representation
         :return: a string, the official string representation of this bank
 
         >>> my_bank = Bank()
@@ -487,6 +495,7 @@ class Report:
     def __str__(self):
         """Return the string when this report is printed.
 
+        :postcondition: return the string that will be returned when object is printed
         :return: a string, the returned string if the report is passed to print
 
         >>> game_report = Report()
@@ -498,6 +507,7 @@ class Report:
     def __repr__(self):
         """Return the official string representation of the report.
 
+        :postcondition: return the object's string representation
         :return: a string, the official string representation of this report
 
         >>> game_report = Report()
@@ -588,6 +598,19 @@ def draw_card(person, deck, times=1):
     2
     >>> my_person.hand
     [Card(2, 2, Diamonds)]
+        >>> my_person = Player()
+    >>> my_deck = CardDeck()
+    >>> draw_card(my_person, my_deck, 2)
+    <BLANKLINE>
+    -----> User draws 2 of Diamonds with a value of 2
+    Their current total hand is 2.
+    <BLANKLINE>
+    -----> User draws 2 of Hearts with a value of 2
+    Their current total hand is 4.
+    >>> my_person.total
+    4
+    >>> my_person.hand
+    [Card(2, 2, Diamonds), Card(2, 2, Hearts)]
     """
     drawing_player = "Dealer" if person.dealer else "User"
     for _ in range(times):
