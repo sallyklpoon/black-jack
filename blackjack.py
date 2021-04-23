@@ -6,6 +6,7 @@ This is a module to play BlackJack 21.
 """
 
 import random
+import time
 
 """
 ========================================================================================================================
@@ -19,8 +20,9 @@ def WELCOME() -> str:
 
     :return: a string, the welcome message
     """
-    return "Hi! Welcome to the table, let's start your game of BlackJack 21.\n" \
-           "In this game, the dealer will draw first until they stand before you have the chance to draw or stand.\n"
+    return f"Hi! Welcome to the table, let's start your game of BlackJack 21.\n" \
+           "In this game, the dealer will draw first until they stand before you have the chance to draw or stand.\n" \
+           f"The MINIMUM BET value is {MINIMUM_BET()}"
 
 
 def TURN_OPTIONS() -> tuple:
@@ -83,7 +85,7 @@ def MINIMUM_BET() -> int:
 def WIN_BONUS() -> int:
     """Return the bonus multiplier for a player's win towards their bet amount to collect.
 
-    :return: an integer, the bonus mulitplier for a player's win
+    :return: an integer, the bonus multiplier for a player's win
     """
     return 2
 
@@ -94,6 +96,7 @@ def ACE_MODIFIER() -> int:
     :return: an integer, the modifier when a user  has an Ace to adjust their soft hand
     """
     return 10
+
 
 """
 ========================================================================================================================
@@ -413,11 +416,12 @@ class Bank:
         """
         amount = self.get_bet()
         while not self.valid_bet(amount):
-            print(f"You don't have that money! Please input an amount within ${MINIMUM_BET()} and ${self.balance}\n")
+            print(f"That is an invalid bet. Please input an amount within ${MINIMUM_BET()} and ${self.balance}\n")
             amount = self.get_bet()
         self.balance -= amount
-        self.bet += amount
-        print(f"A total of ${self.bet} has been deducted from your balance. Good luck, player!")
+        self.bet = amount
+        print(f"A total of ${self.bet} has been deducted from your balance. Good luck, player!\n")
+        time.sleep(1)
 
     def collect(self, bonus=1):
         """Collect the bet amount multiplied by a bonus.
@@ -434,12 +438,13 @@ class Bank:
         >>> my_bank = Bank()
         >>> my_bank.collect(1)
         A total of $0 has been collected to your balance.
+        <BLANKLINE>
         >>> my_bank.balance
         100
         """
         collect_amount = self.bet * bonus
         self.balance += collect_amount
-        print(f"A total of ${collect_amount} has been collected to your balance.")
+        print(f"A total of ${collect_amount} has been collected to your balance.\n")
 
     def report_balance(self):
         """Print the current balance in the bank.
@@ -450,8 +455,9 @@ class Bank:
         >>> my_bank = Bank()
         >>> my_bank.report_balance()
         The current balance in your account is $100.
+        <BLANKLINE>
         """
-        print(f"The current balance in your account is ${self.balance}.")
+        print(f"The current balance in your account is ${self.balance}.\n")
 
 
 class Report:
@@ -592,7 +598,9 @@ def draw_card(person, deck, times=1):
                 person.aceCount += 1
             person.hand.append(card)
             person.total += card.value
-            print(f"-----> {drawing_player} draws {card.__str__()}\n")
+            print(f"-----> {drawing_player} draws {card.__str__()}\n"
+                  f"Their current total hand is {person.total}.\n")
+            time.sleep(1)
 
 
 def bust(person):
@@ -740,7 +748,7 @@ def end_game(bank, card_deck) -> bool:
     """
     if bank.balance < MINIMUM_BET():
         print("You're broke and you've run out of money! :(\n")
-    else:
+    elif not card_deck.cards:
         print("We've exhausted the deck of cards.\n")
     return bank.balance < MINIMUM_BET() or not card_deck.cards
 
@@ -780,8 +788,10 @@ def start_round(user, dealer, deck):
     >>> bob.total
     4
     """
+    print("\n======== INITIAL DEAL ========")
     draw_card(dealer, deck, 2)
     draw_card(user, deck, 2)
+    time.sleep(1.5)
 
 
 def dealer_turn(dealer, deck):
@@ -797,6 +807,7 @@ def dealer_turn(dealer, deck):
 
 
     """
+    print("\n======== DEALER'S TURN ========")
     while deck.cards and not bust(dealer) and dealer.total < STAND_LIMIT():
         draw_card(dealer, deck)
     print("The dealer Stands.\n")
@@ -815,11 +826,13 @@ def player_turn(user, deck):
 
     No doctests, player input required
     """
+    print("\n======== PLAYER'S TURN ========")
     while deck.cards and not bust(user):
         if player_draw():
             draw_card(user, deck)
         else:
             print("You've chosen to Stand, this ends the round.")
+            break
 
 
 def player_draw():
@@ -831,8 +844,7 @@ def player_draw():
 
     No doctests, player input required
     """
-    print("It's your turn!\n"
-          "What would you like to do?\n")
+    print("What would you like to do?\n")
     number_print(TURN_OPTIONS())
     user_decision = input("Enter the number of your decision: ")
     return user_decision == "1"
@@ -985,19 +997,6 @@ def end_round(winner_result, bank, report):
         win_round(bank, report)
     else:   # winner_result == "dealer"
         lose_round(report)
-
-
-def reset(player, dealer):
-    """Reset the player and dealer for another round.
-
-    :param player: a Player
-    :param dealer: a Player
-    :precondition: the player and dealer are instances of the Player class
-    :postcondition: the player and dealer's total, hand, and aces attributes are back to 0 or empty, resetting for
-                    the next round
-    :return: None, player and dealer attributes modified accurately for the next round
-    """
-    pass
 
 
 """
