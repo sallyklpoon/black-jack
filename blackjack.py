@@ -866,6 +866,7 @@ def dealer_turn(dealer, deck):
     while deck.cards and not bust(dealer) and dealer.total < STAND_LIMIT():
         draw_card(dealer, deck)
     print(f"\nThe dealer Stands, their total is \033[33m{dealer.total}\033[0m.\n")
+    time.sleep(1)
 
 
 def player_turn(user, deck):
@@ -889,6 +890,7 @@ def player_turn(user, deck):
         else:
             print(f"\nYou've chosen to Stand, this ends the round with your hand of \033[36m{user.total}\033[0m.\n")
             break
+    time.sleep(1)
 
 
 def player_draw():
@@ -1088,6 +1090,41 @@ def end_round(winner_result, bank, report):
     :postcondition: the bank and report is appropriately modified based on winner_results by being passed to
                     the correct helper functions for winning, losing, or draws
     :return: None, the bank and report modified based on the winner_result
+
+    >>> my_bank = Bank()
+    >>> my_bank.bet = 10
+    >>> my_report = Report()
+
+    >>> end_round("draw", my_bank, my_report)
+    Bizarre! Looks like it was a tie. You get your money back. :)
+    <BLANKLINE>
+    A total of $10 has been collected to your balance.
+    <BLANKLINE>
+    >>> my_bank.balance
+    110
+    >>> my_report
+    Report(0, 0, 1)
+
+    >>> end_round("user", my_bank, my_report)
+    <BLANKLINE>
+    YOU WIN THIS ROUND!!!
+    You get to collect 2x the bet you placed!
+    Hope you can use this towards your student loans ;)
+    <BLANKLINE>
+    A total of $20 has been collected to your balance.
+    <BLANKLINE>
+    >>> my_bank.balance
+    130
+    >>> my_report
+    Report(1, 0, 1)
+
+    >>> end_round("dealer", my_bank, my_report)
+    You've lost this round, sorry my friend :(
+    <BLANKLINE>
+    >>> my_bank.balance
+    130
+    >>> my_report
+    Report(1, 1, 1)
     """
     if winner_result == "draw":
         draw_round(bank, report)
