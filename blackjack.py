@@ -1201,4 +1201,5 @@ def blackjack():
 
 
 if __name__ == '__main__':
+    """Execute if this module is being run as a program"""
     blackjack()
