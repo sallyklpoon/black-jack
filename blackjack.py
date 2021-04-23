@@ -997,6 +997,22 @@ def win_round(bank, report):
     :postcondition: the report updates and increments the report.wins by 1
     :return: None, report and bank attributes updated
 
+    >>> my_bank = Bank()
+    >>> my_report = Report()
+    >>> my_bank.balance = 190
+    >>> my_bank.bet = 10
+    >>> win_round(my_bank, my_report)
+    <BLANKLINE>
+    YOU WIN THIS ROUND!!!
+    You get to collect 2x the bet you placed!
+    Hope you can use this towards your student loans ;)
+    <BLANKLINE>
+    A total of $20 has been collected to your balance.
+    <BLANKLINE>
+    >>> my_bank.balance
+    210
+    >>> my_report
+    Report(1, 0, 0)
     """
     print(f"\nYOU WIN THIS ROUND!!!\n"
           f"You get to collect {WIN_BONUS()}x the bet you placed!\n"
@@ -1013,6 +1029,18 @@ def lose_round(report):
     :precondition: report is an instance of the Report class
     :postcondition: the report updates and increments the report.losses by 1
     :return: None, report.loss attribute updated
+
+    >>> my_report = Report()
+    >>> lose_round(my_report)
+    You've lost this round, sorry my friend :(
+    <BLANKLINE>
+    >>> my_report
+    Report(0, 1, 0)
+    >>> lose_round(my_report)
+    You've lost this round, sorry my friend :(
+    <BLANKLINE>
+    >>> my_report
+    Report(0, 2, 0)
     """
     print("You've lost this round, sorry my friend :(\n")
     report.record(result="lose")
@@ -1028,6 +1056,20 @@ def draw_round(bank, report):
     :postcondition: the bank collects back the bet amount
     :postcondition: the report updates and increments the report.draws by 1
     :return: None, report and bank attributes updated
+
+    >>> my_bank = Bank()
+    >>> my_report = Report()
+    >>> my_bank.balance = 50
+    >>> my_bank.bet = 15
+    >>> draw_round(my_bank, my_report)
+    Bizarre! Looks like it was a tie. You get your money back. :)
+    <BLANKLINE>
+    A total of $15 has been collected to your balance.
+    <BLANKLINE>
+    >>> my_bank.balance
+    65
+    >>> my_report
+    Report(0, 0, 1)
     """
     print("Bizarre! Looks like it was a tie. You get your money back. :)\n")
     bank.collect()
@@ -1068,6 +1110,8 @@ def blackjack():
     :postcondition: the game will continue to run until one card deck is exhausted
                     or player's bank is < MINIMUM_BET()
     :return: None, executes the game to completion
+
+    No doctests, player input required
     """
     score_report, bank, game_deck = start_game()
     while not end_game(bank, game_deck):
