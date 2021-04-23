@@ -413,10 +413,11 @@ class Bank:
         """
         amount = self.get_bet()
         while not self.valid_bet(amount):
-            print(f"You don't have that money! Please input an amount within ${MINIMUM_BET()} and ${self.balance}")
+            print(f"You don't have that money! Please input an amount within ${MINIMUM_BET()} and ${self.balance}\n")
             amount = self.get_bet()
         self.balance -= amount
         self.bet += amount
+        print(f"A total of ${self.bet} has been deducted from your balance. Good luck, player!")
 
     def collect(self, bonus=1):
         """Collect the bet amount multiplied by a bonus.
@@ -432,13 +433,13 @@ class Bank:
 
         >>> my_bank = Bank()
         >>> my_bank.collect(1)
-        The player collects $0.
+        A total of $0 has been collected to your balance.
         >>> my_bank.balance
         100
         """
         collect_amount = self.bet * bonus
         self.balance += collect_amount
-        print(f"The player collects ${collect_amount}.")
+        print(f"A total of ${collect_amount} has been collected to your balance.")
 
 
 class Report:
@@ -912,8 +913,13 @@ def win_round(bank, report):
     :postcondition: the bank collects winnings from the bet with a WIN_BONUS() multiplier
     :postcondition: the report updates and increments the report.wins by 1
     :return: None, report and bank attributes updated
+
     """
-    pass
+    print("You've won this round!\n"
+          "You get to collect 2x the bet you placed!\n"
+          "Hope you can use this towards your student loans!!\n")
+    bank.collect(WIN_BONUS())
+    report.record(result="win")
 
 
 def lose_round(report):
@@ -925,7 +931,8 @@ def lose_round(report):
     :postcondition: the report updates and increments the report.losses by 1
     :return: None, report.loss attribute updated
     """
-    pass
+    print("Sorry, looks like the dealer beat you this round.\n")
+    report.record(result="lose")
 
 
 def draw_round(bank, report):
@@ -939,22 +946,30 @@ def draw_round(bank, report):
     :postcondition: the report updates and increments the report.draws by 1
     :return: None, report and bank attributes updated
     """
-    pass
+    print("Bizarre! Looks like it was a tie. You get your money back. :)\n")
+    bank.collect()
+    report.record(result="draw")
 
 
 def end_round(winner_result, bank, report):
     """End the round appropriately based on the results of the win for a round.
 
-    :param winner_result: a string of either "draw", "player", or "dealer"
+    :param winner_result: a string
     :param bank: a Bank
     :param report: a Report
+    :precondition: winner_result is a string of either "draw", "user", or "dealer"
     :precondition: bank is an instance of the Bank class
     :precondition: report is an instance of the Report class
     :postcondition: the bank and report is appropriately modified based on winner_results by being passed to
                     the correct helper functions for winning, losing, or draws
     :return: None, the bank and report modified based on the winner_result
     """
-    pass
+    if winner_result == "draw":
+        draw_round(bank, report)
+    elif winner_result == "user":
+        win_round(bank, report)
+    else:   # winner_result == "dealer"
+        lose_round(report)
 
 
 def reset(player, dealer):
