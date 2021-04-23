@@ -580,8 +580,9 @@ def draw_card(person, deck, times=1):
     >>> my_person = Player()
     >>> my_deck = CardDeck()
     >>> draw_card(my_person, my_deck)
-    -----> User draws 2 of Diamonds with a value of 2
     <BLANKLINE>
+    -----> User draws 2 of Diamonds with a value of 2
+    Their current total hand is 2.
     >>> my_person.total
     2
     >>> my_person.hand
@@ -598,8 +599,8 @@ def draw_card(person, deck, times=1):
                 person.aceCount += 1
             person.hand.append(card)
             person.total += card.value
-            print(f"-----> {drawing_player} draws {card.__str__()}\n"
-                  f"Their current total hand is {person.total}.\n")
+            print(f"\n-----> {drawing_player} draws {card.__str__()}\n"
+                  f"Their current total hand is {person.total}.")
             time.sleep(1)
 
 
@@ -652,8 +653,8 @@ def adjust_ace(person):
     >>> my_player.total = GOAL_TOTAL() + 1
     >>> my_player.aceCount = 2
     >>> adjust_ace(my_player)
+    <BLANKLINE>
     An Ace value in this player's hand has been adjusted to 1 for a new total of 12
-
     >>> my_player.total = GOAL_TOTAL()
     >>> my_player.aceCount = 2
     >>> adjust_ace(my_player)
@@ -665,13 +666,16 @@ def adjust_ace(person):
     >>> my_player.total = GOAL_TOTAL() + 11
     >>> my_player.aceCount = 2
     >>> adjust_ace(my_player)
+    <BLANKLINE>
     An Ace value in this player's hand has been adjusted to 1 for a new total of 22
+    <BLANKLINE>
     An Ace value in this player's hand has been adjusted to 1 for a new total of 12
     """
     while person.total > GOAL_TOTAL() and person.aceCount != 0:
         person.total -= ACE_MODIFIER()
         person.aceCount -= 1
-        print(f"An Ace value in this player's hand has been adjusted to 1 for a new total of {person.total}")
+        print(f"\nAn Ace value in this player's hand has been adjusted to "
+              f"1 for a new total of {person.total}")
 
 
 def number_print(items: iter) -> None:
@@ -740,10 +744,14 @@ def end_game(bank, card_deck) -> bool:
     False
     >>> piggy_bank.balance = MINIMUM_BET() - 1
     >>> end_game(piggy_bank, my_deck)
+    You're broke and you've run out of money! :(
+    <BLANKLINE>
     True
     >>> piggy_bank.balance = START_BANK()
     >>> my_deck.cards = []
     >>> end_game(piggy_bank, my_deck)
+    We've exhausted the deck of cards.
+    <BLANKLINE>
     True
     """
     if bank.balance < MINIMUM_BET():
@@ -771,13 +779,24 @@ def start_round(user, dealer, deck):
     >>> bob = Player()
     >>> my_dealer = Player(dealer=True)
     >>> start_round(bob, my_dealer, my_deck)
+    <BLANKLINE>
+    ======== INITIAL DEAL ========
+    <BLANKLINE>
     -----> Dealer draws 2 of Diamonds with a value of 2
+    Their current total hand is 2.
     <BLANKLINE>
     -----> Dealer draws 2 of Hearts with a value of 2
+    Their current total hand is 4.
     <BLANKLINE>
     -----> User draws 2 of Clubs with a value of 2
+    Their current total hand is 2.
     <BLANKLINE>
     -----> User draws 2 of Spades with a value of 2
+    Their current total hand is 4.
+    <BLANKLINE>
+    This concludes the initial deal:
+    \033[36mPlayer: 4\033[0m
+    \033[33mDealer: 4\033[0m
     <BLANKLINE>
     >>> my_dealer.hand
     [Card(2, 2, Diamonds), Card(2, 2, Hearts)]
@@ -791,6 +810,9 @@ def start_round(user, dealer, deck):
     print("\n======== INITIAL DEAL ========")
     draw_card(dealer, deck, 2)
     draw_card(user, deck, 2)
+    print(f"\nThis concludes the initial deal:\n"
+          f"\033[36mPlayer: {user.total}\033[0m\n"
+          f"\033[33mDealer: {dealer.total}\033[0m\n")
     time.sleep(1.5)
 
 
@@ -805,12 +827,45 @@ def dealer_turn(dealer, deck):
                     they bust
     :return: None, the dealer's hand and the deck may be modified
 
-
+    >>> my_dealer = Player(dealer=True)
+    >>> my_deck = CardDeck()
+    >>> my_dealer.total = 14
+    >>> dealer_turn(my_dealer, my_deck)
+    <BLANKLINE>
+    ======== DEALER'S TURN ========
+    <BLANKLINE>
+    -----> Dealer draws 2 of Diamonds with a value of 2
+    Their current total hand is 16.
+    <BLANKLINE>
+    The dealer Stands, their total is \033[33m16\033[0m.
+    <BLANKLINE>
+    >>> my_dealer.total = STAND_LIMIT()
+    >>> dealer_turn(my_dealer, my_deck)
+    <BLANKLINE>
+    ======== DEALER'S TURN ========
+    <BLANKLINE>
+    The dealer Stands, their total is \033[33m15\033[0m.
+    <BLANKLINE>
+    >>> my_dealer.total = GOAL_TOTAL() + 1
+    >>> dealer_turn(my_dealer, my_deck)
+    <BLANKLINE>
+    ======== DEALER'S TURN ========
+    <BLANKLINE>
+    The dealer Stands, their total is \033[33m22\033[0m.
+    <BLANKLINE>
+    >>> my_dealer.total = 10
+    >>> my_deck.cards = []
+    >>> dealer_turn(my_dealer, my_deck)
+    <BLANKLINE>
+    ======== DEALER'S TURN ========
+    <BLANKLINE>
+    The dealer Stands, their total is \033[33m10\033[0m.
+    <BLANKLINE>
     """
     print("\n======== DEALER'S TURN ========")
     while deck.cards and not bust(dealer) and dealer.total < STAND_LIMIT():
         draw_card(dealer, deck)
-    print("The dealer Stands.\n")
+    print(f"\nThe dealer Stands, their total is \033[33m{dealer.total}\033[0m.\n")
 
 
 def player_turn(user, deck):
@@ -826,12 +881,13 @@ def player_turn(user, deck):
 
     No doctests, player input required
     """
-    print("\n======== PLAYER'S TURN ========")
+    print(f"\n======== PLAYER'S TURN ========\n\n"
+          f"Your current hand is \033[36m{user.total}\033[0m.\n")
     while deck.cards and not bust(user):
         if player_draw():
             draw_card(user, deck)
         else:
-            print("You've chosen to Stand, this ends the round.")
+            print(f"\nYou've chosen to Stand, this ends the round with your hand of \033[36m{user.total}\033[0m.\n")
             break
 
 
@@ -844,7 +900,7 @@ def player_draw():
 
     No doctests, player input required
     """
-    print("What would you like to do?\n")
+    print("\nWhat would you like to do?\n")
     number_print(TURN_OPTIONS())
     user_decision = input("Enter the number of your decision: ")
     return user_decision == "1"
@@ -942,9 +998,9 @@ def win_round(bank, report):
     :return: None, report and bank attributes updated
 
     """
-    print("You've won this round!\n"
-          "You get to collect 2x the bet you placed!\n"
-          "Hope you can use this towards your student loans!!\n")
+    print(f"\nYOU WIN THIS ROUND!!!\n"
+          f"You get to collect {WIN_BONUS()}x the bet you placed!\n"
+          f"Hope you can use this towards your student loans ;)\n")
     bank.collect(WIN_BONUS())
     report.record(result="win")
 
@@ -958,7 +1014,7 @@ def lose_round(report):
     :postcondition: the report updates and increments the report.losses by 1
     :return: None, report.loss attribute updated
     """
-    print("Sorry, looks like the dealer beat you this round.\n")
+    print("You've lost this round, sorry my friend :(\n")
     report.record(result="lose")
 
 
