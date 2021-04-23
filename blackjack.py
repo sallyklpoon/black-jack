@@ -885,7 +885,7 @@ def player_turn(user, deck):
     """
     print(f"\n======== PLAYER'S TURN ========\n\n"
           f"Your current hand is \033[36m{user.total}\033[0m.\n")
-    while deck.cards and not bust(user):
+    while deck.cards and not bust(user) and user.total != GOAL_TOTAL():
         if player_draw():
             draw_card(user, deck)
         else:
