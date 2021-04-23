@@ -441,6 +441,18 @@ class Bank:
         self.balance += collect_amount
         print(f"A total of ${collect_amount} has been collected to your balance.")
 
+    def report_balance(self):
+        """Print the current balance in the bank.
+
+        :postcondition: the current balance is printed to the user
+        :return: None, the current balance reported to the user
+
+        >>> my_bank = Bank()
+        >>> my_bank.report_balance()
+        The current balance in your account is $100.
+        """
+        print(f"The current balance in your account is ${self.balance}.")
+
 
 class Report:
 
@@ -693,11 +705,10 @@ def start_game() -> tuple:
     No doctests, deck.shuffle uses random module
     """
     print(WELCOME())
-    user, dealer = Player(), Player(dealer=True)
     score_report, bank = Report(), Bank()
     deck = CardDeck()
     deck.shuffle()
-    return user, dealer, score_report, bank, deck
+    return score_report, bank, deck
 
 
 # -----------------END GAME---------------------------------------------------------------------------------------------
@@ -727,6 +738,10 @@ def end_game(bank, card_deck) -> bool:
     >>> end_game(piggy_bank, my_deck)
     True
     """
+    if bank.balance < MINIMUM_BET():
+        print("You're broke and you've run out of money! :(\n")
+    else:
+        print("We've exhausted the deck of cards.\n")
     return bank.balance < MINIMUM_BET() or not card_deck.cards
 
 # -----------------PLAY ROUND-------------------------------------------------------------------------------------------
@@ -782,7 +797,7 @@ def dealer_turn(dealer, deck):
 
 
     """
-    while deck and not bust(dealer) and dealer.total < STAND_LIMIT():
+    while deck.cards and not bust(dealer) and dealer.total < STAND_LIMIT():
         draw_card(dealer, deck)
     print("The dealer Stands.\n")
 
@@ -800,7 +815,7 @@ def player_turn(user, deck):
 
     No doctests, player input required
     """
-    while deck and not bust(user):
+    while deck.cards and not bust(user):
         if player_draw():
             draw_card(user, deck)
         else:
@@ -999,4 +1014,19 @@ def blackjack():
                     or player's bank is < MINIMUM_BET()
     :return: None, executes the game to completion
     """
-    pass
+    score_report, bank, game_deck = start_game()
+    while not end_game(bank, game_deck):
+        user, dealer = Player(), Player(dealer=True)
+        bank.report_balance()
+        bank.place_bet()
+        play_round(user=user, dealer=dealer, deck=game_deck)
+        if game_deck.cards:
+            winner = decide_winner(user, dealer)
+            end_round(winner_result=winner, bank=bank, report=score_report)
+    print(score_report)
+    score_report.report_rounds()
+    print("This concludes our game of BlackJack 21, thank you for playing!")
+
+
+if __name__ == '__main__':
+    blackjack()
