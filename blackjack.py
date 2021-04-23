@@ -20,8 +20,8 @@ def WELCOME() -> str:
 
     :return: a string, the welcome message
     """
-    return f"Hi! Welcome to the table, let's start your game of BlackJack 21.\n" \
-           "In this game, the dealer will draw first until they stand before you have the chance to draw or stand.\n" \
+    return f"\033[1mHi! Welcome to the BlackJack 21 table.\033[0m\n\n" \
+           "The dealer will draw first until they Stand.\n" \
            f"The MINIMUM BET value is {MINIMUM_BET()}"
 
 
@@ -454,10 +454,11 @@ class Bank:
 
         >>> my_bank = Bank()
         >>> my_bank.report_balance()
+        <BLANKLINE>
         The current balance in your account is $100.
         <BLANKLINE>
         """
-        print(f"The current balance in your account is ${self.balance}.\n")
+        print(f"\nThe current balance in your account is ${self.balance}.\n")
 
 
 class Report:
@@ -1136,7 +1137,7 @@ def end_round(winner_result, bank, report):
 
 """
 ========================================================================================================================
-                                                      MAIN FUNCTION
+                                                 MAIN FUNCTION
 ========================================================================================================================
 """
 
@@ -1161,7 +1162,7 @@ def blackjack():
             end_round(winner_result=winner, bank=bank, report=score_report)
     print(score_report)
     score_report.report_rounds()
-    print("This concludes our game of BlackJack 21, thank you for playing!")
+    print(f"This concludes our game of BlackJack 21 and you get to take home ${bank.balance}, thank you for playing!")
 
 
 if __name__ == '__main__':
