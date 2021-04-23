@@ -264,7 +264,7 @@ class Report:
         :precondition: result is a string of either "top_draw", "win" or "lose"
         :postcondition: increments record.loss by 1 if result == "lose"
         :postcondition: increments record.win by 1 if result == "win"
-        :postconditoin: increments record.top_draw by 1 if result == "top_draw"
+        :postcondition: increments record.top_draw by 1 if result == "top_draw"
         :return: None, modifies either record.loss, record.win, or record.top_draw appropriately
         """
         pass
@@ -276,7 +276,6 @@ class Report:
         :return: an integer, the sum of all rounds that have been played
         """
         pass
-
 
 
 """
@@ -360,14 +359,162 @@ def end_game():
 # -----------------PLAY ROUND-------------------------------------------------------------------------------------------
 
 
-def play_round(player, dealer, deck):
-    """
+def start_round(player, dealer, deck):
+    """Begin the round by having player and dealer draw 2 cards each.
 
-    :param player:
-    :param dealer:
-    :param deck:
-    :return:
+    :param player: a Player
+    :param dealer: a Player
+    :param deck: a CardDeck
+    :precondition: the player and dealer are instances of the Player class
+    :precondition: the deck is an instance of the CardDeck class
+    :postcondition: the player and dealer receives 2 cards to their hand by drawing from the deck
+    :postcondition: the deck will have cards reduced in its deck.cards attribute by at most, 4 cards
+    :return: None, player, dealer, and deck attributes likely modified
     """
+    pass
+
+
+def dealer_turn(dealer, deck):
+    """Execute the dealer's turn to draw until they hit their STAND_LIMIT(), the deck is exhausted, or they bust.
+
+    :param dealer: a Player
+    :param deck: a CardDeck
+    :precondition: the dealer is an instance of a Player class
+    :precondition: a deck is an instance of a CardDeck class
+    :postcondition: the dealer will draw until the card deck is exhausted, they have reached STAND_LIMIT(), or
+                    they bust
+    :return: None, the dealer's hand and the deck may be modified
+    """
+    pass
+
+
+def player_turn(player, deck):
+    """Execute the player's turn to draw until player decides to stand, the deck is exhausted, or they bust.
+
+    :param player: a Player
+    :param deck: a CardDeck
+    :precondition: the player is an instance of a Player class
+    :precondition: a deck is an instance of a CardDeck class
+    :postcondition: the player will be asked if they would like to draw until the card deck is exhausted, they bust,
+                    or player decides to stand
+    :return: None, player and deck attributes possibly modified
+
+    No doctests, player input required
+    """
+    pass
+
+
+def player_draw():
+    """Return if the player wants to draw another card.
+
+    :postcondition: return Boolean True if player wants to draw another card, return Boolean False if player
+                    does not want to draw another card
+    :return: Boolean
+    """
+    pass
+
+
+def play_round(player, dealer, deck):
+    """Execute a full round of BlackJack between a player and dealer.
+
+    :param player: a Player
+    :param dealer: a Player
+    :param deck: a CardDeck
+    :precondition: the player and dealer are instances of the Player class
+    :precondition: the deck is an instance of the CardDeck class
+    :postcondition: the player and dealer's total, hand, and aces attributes possibly modified as well as deck.cards
+                    modified based on game play
+    :postcondition: the game ends if the dealer's hand is a bust or user decides to stand
+    :return: None, dealer, player, and deck likely modified in attributes
+
+    No doctests, user input required
+    """
+    pass
+
+
+# -----------------ENDING THE ROUND-------------------------------------------------------------------------------------
+
+def decide_winner(player, dealer):
+    """Determine who the winner is based on the total results.
+
+    :param player: a Player
+    :param dealer: a Player
+    :precondition: the player and dealer are instances of the Player class
+    :postcondition: return a draw if both player and dealer's total scores are equal
+    :postcondition: return 'player' if the dealer's hand is bust or if player's total is > dealer's total
+    :postcondition: return 'dealer' if the player's hand is bust or if dealer's total is > player's total
+    :return: a string, either 'draw', 'player' or 'dealer'
+    """
+    pass
+
+
+def win_round(bank, report):
+    """Make win round modifications to bank and report.
+
+    :param bank: a Bank
+    :param report: a Report
+    :precondition: bank is an instance of the Bank class
+    :precondition: report is an instance of the Report class
+    :postcondition: the bank collects winnings from the bet with a WIN_BONUS() multiplier
+    :postcondition: the report updates and increments the report.wins by 1
+    :return: None, report and bank attributes updated
+    """
+    pass
+
+
+def lose_round(report):
+    """Make loss round modifications to bank and report.
+
+    :param report: a Report
+    :precondition: bank is an instance of the Bank class
+    :precondition: report is an instance of the Report class
+    :postcondition: the report updates and increments the report.losses by 1
+    :return: None, report.loss attribute updated
+    """
+    pass
+
+
+def draw_round(bank, report):
+    """Make draw round modifications to bank and report.
+
+    :param bank: a Bank
+    :param report: a Report
+    :precondition: bank is an instance of the Bank class
+    :precondition: report is an instance of the Report class
+    :postcondition: the bank collects back the bet amount
+    :postcondition: the report updates and increments the report.draws by 1
+    :return: None, report and bank attributes updated
+    """
+    pass
+
+
+def end_round(winner_result, bank, report):
+    """End the round appropriately based on the results of the win for a round.
+
+    :param winner_result: a string of either "draw", "player", or "dealer"
+    :param bank: a Bank
+    :param report: a Report
+    :precondition: bank is an instance of the Bank class
+    :precondition: report is an instance of the Report class
+    :postcondition: the bank and report is appropriately modified based on winner_results by being passed to
+                    the correct helper functions for winning, losing, or draws
+    :return: None, the bank and report modified based on the winner_result
+    """
+    pass
+
+
+def reset(player, dealer):
+    """Reset the player and dealer for another round.
+
+    :param player: a Player
+    :param dealer: a Player
+    :precondition: the player and dealer are instances of the Player class
+    :postcondition: the player and dealer's total, hand, and aces attributes are back to 0 or empty, resetting for
+                    the next round
+    :return: None, player and dealer attributes modified accurately for the next round
+    """
+    pass
+
 
 """
 ========================================================================================================================
