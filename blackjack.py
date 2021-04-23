@@ -42,24 +42,3 @@ def START_BANK():
 
 class Player:
 
-    def __init__(self):
-        """Instantiate an instance of Player.
-
-        :return: an instance of the Player class
-        """
-        pass
-
-    def __str__(self):
-        """Return the string when Player is printed.
-
-        :return: a string, when player is printed as a string
-        """
-        pass
-
-    def __repr__(self):
-        """Return the representational string when Player is called as an object.
-
-        :return: a string, when the player is called as an object
-        """
-        pass
-
