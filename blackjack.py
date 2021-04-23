@@ -12,6 +12,69 @@ This is a module to play BlackJack 21.
 """
 
 
+def TURN_OPTIONS() -> tuple:
+    """Return the player's options available for each turn.
+
+    :return: a tuple,
+    """
+
+
+def GOAL_TOTAL() -> int:
+    """Return the goal total hand for the players in the game.
+
+    :return: an integer, the goal total
+    """
+    return 21
+
+
+def STAND_LIMIT() -> int:
+    """Return the dealer's stand limit
+
+    :return: an integer, the stand limit for a dealer
+    """
+    return 15
+
+
+def CARD_VALUES() -> dict:
+    """Return all the possible card values in BlackJack 21.
+
+    :return: a dictionary, all the card values
+    """
+    return {"2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9,
+            "10": 10, "Jack": 10, "Queen": 10, "King": 10, "Ace": 11}
+
+
+def CARD_SUITS() -> tuple:
+    """Return all possible card suits.
+
+    :return: a tuple of card suits
+    """
+    return "Diamonds", "Hearts", "Clubs", "Spades"
+
+
+def START_BANK() -> int:
+    """Return the starting bank balance for the player.
+
+    :return: an integer, the starting bank balance for a player
+    """
+    return 100
+
+
+def MINIMUM_BET() -> int:
+    """Return the minimum bet value.
+
+    :return: an integer, the minimum bet permitted
+    """
+    return 10
+
+
+def WIN_BONUS() -> int:
+    """Return the bonus multiplier for a player's win towards their bet amount to collect.
+
+    :return: an integer, the bonus mulitplier for a player's win
+    """
+    return 2
+
 """
 ========================================================================================================================
                                                       CLASSES
