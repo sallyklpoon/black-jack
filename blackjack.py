@@ -128,15 +128,49 @@ class CardDeck:
         """Instantiate a CardDeck class.
 
         >>> my_deck = CardDeck()
+        >>> len(my_deck.cards)
+        52
+        >>> my_deck.cards #doctest: +NORMALIZE_WHITESPACE
+        [Card(2, 2, Diamonds), Card(2, 2, Hearts), Card(2, 2, Clubs), Card(2, 2, Spades),
+        Card(3, 3, Diamonds), Card(3, 3, Hearts), Card(3, 3, Clubs), Card(3, 3, Spades),
+        Card(4, 4, Diamonds), Card(4, 4, Hearts), Card(4, 4, Clubs), Card(4, 4, Spades),
+        Card(5, 5, Diamonds), Card(5, 5, Hearts), Card(5, 5, Clubs), Card(5, 5, Spades),
+        Card(6, 6, Diamonds), Card(6, 6, Hearts), Card(6, 6, Clubs), Card(6, 6, Spades),
+        Card(7, 7, Diamonds), Card(7, 7, Hearts), Card(7, 7, Clubs), Card(7, 7, Spades),
+        Card(8, 8, Diamonds), Card(8, 8, Hearts), Card(8, 8, Clubs), Card(8, 8, Spades),
+        Card(9, 9, Diamonds), Card(9, 9, Hearts), Card(9, 9, Clubs), Card(9, 9, Spades),
+        Card(10, 10, Diamonds), Card(10, 10, Hearts), Card(10, 10, Clubs), Card(10, 10, Spades),
+        Card(Jack, 10, Diamonds), Card(Jack, 10, Hearts), Card(Jack, 10, Clubs), Card(Jack, 10, Spades),
+        Card(Queen, 10, Diamonds), Card(Queen, 10, Hearts), Card(Queen, 10, Clubs), Card(Queen, 10, Spades),
+        Card(King, 10, Diamonds), Card(King, 10, Hearts), Card(King, 10, Clubs), Card(King, 10, Spades),
+        Card(Ace, 11, Diamonds), Card(Ace, 11, Hearts), Card(Ace, 11, Clubs), Card(Ace, 11, Spades)]
         """
-        self.cards = []
+        self.cards = [Card(face=card[0], value=card[1], suit=suit)
+                      for card in CARD_VALUES().items() for suit in CARD_SUITS()]
 
     def __str__(self):
         """Return the string when the deck is printed.
 
         :return: a string, the returned string if the deck is passed to print
+
+        >>> my_deck = CardDeck()
+        >>> print(my_deck) #doctest: +NORMALIZE_WHITESPACE
+        This deck contains the following cards:
+        [Card(2, 2, Diamonds), Card(2, 2, Hearts), Card(2, 2, Clubs), Card(2, 2, Spades),
+        Card(3, 3, Diamonds), Card(3, 3, Hearts), Card(3, 3, Clubs), Card(3, 3, Spades),
+        Card(4, 4, Diamonds), Card(4, 4, Hearts), Card(4, 4, Clubs), Card(4, 4, Spades),
+        Card(5, 5, Diamonds), Card(5, 5, Hearts), Card(5, 5, Clubs), Card(5, 5, Spades),
+        Card(6, 6, Diamonds), Card(6, 6, Hearts), Card(6, 6, Clubs), Card(6, 6, Spades),
+        Card(7, 7, Diamonds), Card(7, 7, Hearts), Card(7, 7, Clubs), Card(7, 7, Spades),
+        Card(8, 8, Diamonds), Card(8, 8, Hearts), Card(8, 8, Clubs), Card(8, 8, Spades),
+        Card(9, 9, Diamonds), Card(9, 9, Hearts), Card(9, 9, Clubs), Card(9, 9, Spades),
+        Card(10, 10, Diamonds), Card(10, 10, Hearts), Card(10, 10, Clubs), Card(10, 10, Spades),
+        Card(Jack, 10, Diamonds), Card(Jack, 10, Hearts), Card(Jack, 10, Clubs), Card(Jack, 10, Spades),
+        Card(Queen, 10, Diamonds), Card(Queen, 10, Hearts), Card(Queen, 10, Clubs), Card(Queen, 10, Spades),
+        Card(King, 10, Diamonds), Card(King, 10, Hearts), Card(King, 10, Clubs), Card(King, 10, Spades),
+        Card(Ace, 11, Diamonds), Card(Ace, 11, Hearts), Card(Ace, 11, Clubs), Card(Ace, 11, Spades)]
         """
-        pass
+        return f"This deck contains the following cards: {self.cards}"
 
     def __repr__(self):
         """Return the official string representation of the deck.
