@@ -667,11 +667,11 @@ def adjust_ace(person):
 
     :param person: a Player
     :precondition: person is an instance of the Player class
-    :postcondition: the player's total score is adjusted if and only if they have an ace on hand and their current
+    :postcondition: the person's total score is adjusted if and only if they have an ace on hand and their current
                     total score exceeds that the BUST_LIMIT()
-    :postcondition: should the player meet any of the two conditions for adjustment, the person's score is subtracted
+    :postcondition: should the person meet any of the two conditions for adjustment, the person's score is subtracted
                     by 10 for each ace they have on hand until their total is <= BUST_LIMIT()
-    :return: None, the player's total score possibly modified
+    :return: None, the person's total score possibly modified
 
     >>> my_player = Player()
     >>> my_player.total = GOAL_TOTAL() + 1
@@ -734,9 +734,9 @@ def number_print(items: iter) -> None:
 def start_game() -> tuple:
     """Start the game by producing the necessary components for the game.
 
-    :postcondition: returns the necessary components: user's player, dealer, bank, deck, and report for the game
+    :postcondition: returns the necessary components: bank, deck, and report for the game
                     as a tuple
-    :return: a tuple of the necessary game components
+    :return: a tuple of the necessary game components: report, bank, and deck
 
     No doctests, deck.shuffle uses random module
     """
