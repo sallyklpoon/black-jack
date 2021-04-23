@@ -17,8 +17,9 @@ import random
 def TURN_OPTIONS() -> tuple:
     """Return the player's options available for each turn.
 
-    :return: a tuple,
+    :return: a tuple, the options for a user
     """
+    return "Hit me! (Draw another Card)", "Stand (End round, stop drawing)"
 
 
 def GOAL_TOTAL() -> int:
@@ -325,7 +326,7 @@ class Bank:
         self.balance = START_BANK()
         self.bet = 0
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return the string when the bank is printed.
 
         :return: a string, the returned string if the bank is passed to print
@@ -336,7 +337,7 @@ class Bank:
         """
         return f"The player's bank has a balance of ${self.balance} with a bet of ${self.bet} placed."
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return the official string representation of the bank.
 
         :return: a string, the official string representation of this bank
@@ -347,13 +348,58 @@ class Bank:
         """
         return f"Bank({self.balance}, {self.bet})"
 
-    def deduct(self):
-        """Deduct the current bet amount from the bank's balance.
+    @staticmethod
+    def get_bet() -> int:
+        """Return the user's input bet amount as an integer.
 
-        :postcondition: the bank.balance is deducted the bank.bet amount
-        :return: None, the bank.balance modified
+        :precondition: user will only input integers
+        :postcondition: the integer of user's input is returned
+        :return: an integer, the user's bet
+
+        No doctests, requires user input
         """
-        pass
+        return int(input("How much money would you like to place? (input an integer): "))
+
+    def valid_bet(self, amount: int) -> bool:
+        """Verify that a bet is valid.
+
+        Give that MINIMUM_BET <= amount <= bank.balance
+
+        :param amount: an integer
+        :precondition: amount is an integer representing the bet amount placed by a player
+        :postcondition: accurately verify that MINIMUM_BET <= amount <= bank.balance, returning the Boolean of
+                        this statement
+        :return: Boolean, whether or not the bet amount is valid
+
+        >>> my_bank = Bank()
+        >>> my_bank.valid_bet(9)
+        False
+        >>> my_bank.valid_bet(10)
+        True
+        >>> my_bank.valid_bet(13)
+        True
+        >>> my_bank.valid_bet(100)
+        True
+        >>> my_bank.valid_bet(101)
+        False
+        """
+        return MINIMUM_BET() <= amount <= self.balance
+
+    def place_bet(self) -> None:
+        """Allow users to place a valid bet.
+
+        :postcondition: the bet amount that the user has specified is deducted from bank.balance and stored in
+                        bank.bet
+        :return: None, simply modifies both bank.balance and bank.bet
+
+        No doctests, helper function requires user input
+        """
+        amount = self.get_bet()
+        while not self.valid_bet(amount):
+            print(f"You don't have that money! Please input an amount within ${MINIMUM_BET()} and ${self.balance}")
+            amount = self.get_bet()
+        self.balance -= amount
+        self.bet += amount
 
     def collect(self, bonus=1):
         """Collect the bet amount multiplied by a bonus.
@@ -364,47 +410,25 @@ class Bank:
         :precondition: bonus is the bonus multiplier for the collected bet when a player has won
         :postcondition: the Bank.balance appropriately increments by the bank.bet amount multiplied by the bonus
         :return: None, the Bank.balance is modified
+
+        Unable to test with actual bet > 0 due to requirement of user input
+
+        >>> my_bank = Bank()
+        >>> my_bank.collect(1)
+        >>> my_bank.balance
+        100
         """
-        pass
-
-    def get_bet(self) -> int:
-        """Return the user's input bet amount as an integer.
-
-        :precondition: user will only input integers
-        :postcondition: the integer of user's input is returned
-        :return: an integer, the user's bet
-
-        No doctests, requires user input
-        """
-        pass
-
-    def valid_bet(self, amount):
-        """Verify that a bet is valid.
-
-        Give that MINIMUM_BET <= amount <= bank.balance
-
-        :param amount: an integer
-        :precondition: amount is an integer representing the bet amount placed by a player
-        :postcondition: accurately verify that MINIMUM_BET <= amount <= bank.balance, returning the Boolean of
-                        this statement
-        :return: Boolean, whether or not the bet amount is valid
-        """
-        pass
-
-    def place_bet(self):
-        """Allow users to place a valid bet.
-
-        :postcondition: the bet amount that the user has specified is deducted from bank.balance and stored in
-                        bank.bet
-        :return: None, simply modifies both bank.balance and bank.bet
-        """
-        pass
+        collect_amount = self.bet * bonus
+        self.balance += collect_amount
+        print(f"The player collects ${collect_amount}.")
 
 
 class Report:
 
     def __init__(self):
-        """Instantiate a Card class."""
+        """Instantiate a Card class.
+
+        :"""
         pass
 
     def __str__(self):
