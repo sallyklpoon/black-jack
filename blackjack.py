@@ -497,13 +497,28 @@ class Report:
         elif result == "draw":
             self.draws += 1
 
-    def rounds(self):
-        """Return the number of total rounds played.
+    def report_rounds(self):
+        """Print the total rounds played.
 
         :postcondition: accurately sum up wins, losses, and draws to produce the total number of rounds
         :return: an integer, the sum of all rounds that have been played
+
+        >>> game_report = Report()
+        >>> game_report.report_rounds()
+        Total Rounds played: 0
+        >>> game_report.record(result="win")
+        >>> game_report
+        Report(1, 0, 0)
+        >>> game_report.record("lose")
+        >>> game_report
+        Report(1, 1, 0)
+        >>> game_report.record("draw")
+        >>> game_report
+        Report(1, 1, 1)
+        >>> game_report.report_rounds()
+        Total Rounds played: 3
         """
-        pass
+        return print(f"Total Rounds played: {sum([self.wins, self.draws, self.losses])}")
 
 
 """
