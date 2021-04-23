@@ -89,6 +89,14 @@ class Card:
     def __init__(self, face: str, value: int, suit: str):
         """Instantiate a Card class.
 
+        :param face: a string
+        :param value: an integer
+        :param suit: a strng
+        :precondition: face and suit are strings, representing the face value and the suit of the card
+        :precondition: value is an integer, the value of the card in BlackJack 21
+        :postcondition: an instance of the Card class is instantiated
+        :return: an instance of the Card class
+
         >>> two_of_spades = Card("2", 2, "Spades")
         >>> two_of_spades.face
         '2'
@@ -128,6 +136,10 @@ class CardDeck:
 
     def __init__(self):
         """Instantiate a CardDeck class.
+
+        :postcondition: an instance of the CardDeck class is created
+        :postcondition: the object will have the cards attribute, a list of 52 cards
+        :return: an instance of the CardDeck class
 
         >>> my_deck = CardDeck()
         >>> len(my_deck.cards)
@@ -217,6 +229,8 @@ class CardDeck:
 
         When a card is drawn, it is removed from the deck.
 
+        :postcondition: the first card in the deck is 'drawn', meaning it is popped from the deck's list of cards
+                        and returned
         :return: None, the deck will have have one card gone, the top card
 
         >>> my_deck = CardDeck()
@@ -233,9 +247,34 @@ class CardDeck:
 
 class Player:
 
-    def __init__(self):
-        """Instantiate a Player class."""
-        pass
+    def __init__(self, dealer=False):
+        """Instantiate a Player class.
+
+        :param dealer: Boolean
+        :precondition: the dealer value is False by default, but can be True if the player type being instantiated
+                       is the dealer in the game
+        :postcondition: instantiates a player at the table with attributes hand, total, dealer, and aceCount
+        :postcondition: self.hand is an empty list to hold Card objects
+        :postcondition: self.total is the player's current total points based on their hand of cards
+        :postcondition self.aceCount will keep track of the number of aces a player has received and not yet
+                       used up to save busts
+        :postcondition: self.dealer takes dealer input
+
+        >>> chris = Player()
+        >>> sally = Player(dealer=True)
+        >>> print(f"Chris: {chris.hand}, Sally: {sally.hand}")
+        Chris: [], Sally: []
+        >>> print(f"Chris: {chris.total}, Sally: {sally.total}")
+        Chris: 0, Sally: 0
+        >>> print(f"Chris: {chris.aceCount}, Sally: {sally.aceCount}")
+        Chris: 0, Sally: 0
+        >>> print(f"Chris: {chris.dealer}, Sally: {sally.dealer}")
+        Chris: False, Sally: True
+        """
+        self.hand = []
+        self.total = 0
+        self.aceCount = 0
+        self.dealer = dealer
 
     def __str__(self):
         """Return the string when the player is printed.
